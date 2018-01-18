@@ -41,24 +41,35 @@ public class CreateMirrorRepoCmd {
       CompositeTemplateParser ccTemplate = new CompositeTemplateParser(ccTemplateYaml);
       productList = ccTemplate.getProducts();
       
-      // Create the artifacts output line
-      StringBuffer artifacts = new StringBuffer();
-      artifacts.append("sagcc add repository products mirror name=");
-      artifacts.append(cmdArgs.getMirrorRepo());
-      artifacts.append(" sourceRepos=");
-      artifacts.append(cmdArgs.getSourceRepo());
-      artifacts.append(" artifacts=");
+      // Create the Mirror Product artifacts output line
+      StringBuffer mirrorProdCmd = new StringBuffer();
+      mirrorProdCmd.append("sagcc add repository products mirror name=");
+      mirrorProdCmd.append(cmdArgs.getMirrorRepo());
+      mirrorProdCmd.append(" sourceRepos=");
+      mirrorProdCmd.append(cmdArgs.getSourceRepo());
+      mirrorProdCmd.append(" artifacts=");
       int count = 0;
       for (String product : productList) {
-        artifacts.append(product);
+    	  mirrorProdCmd.append(product);
         count++;
         if (count < productList.size()) {
-          artifacts.append(",");
+        	mirrorProdCmd.append(",");
         }
       }
-      artifacts.append(" platforms=");
-      artifacts.append(cmdArgs.getPlatforms());
-      System.out.println(artifacts);
+      mirrorProdCmd.append(" platforms=");
+      mirrorProdCmd.append(cmdArgs.getPlatforms());
+      System.out.println(mirrorProdCmd);
+      
+      // Create the Mirror Fix artifacts output line
+      StringBuffer mirrorFixCmd = new StringBuffer();
+      mirrorFixCmd.append("sagcc add repository fixes mirror name=");
+      mirrorFixCmd.append(cmdArgs.getMirrorRepo());
+      mirrorFixCmd.append("-FIX sourceRepos=Empower");
+      mirrorFixCmd.append(" productRepos=");
+      mirrorFixCmd.append(cmdArgs.getMirrorRepo());
+      mirrorFixCmd.append(" artifacts=LATEST");
+      System.out.println(mirrorFixCmd);
+      
     } catch (FileNotFoundException e) {
       System.err.println(e.getMessage());
     } catch (IllegalArgumentException e) {
